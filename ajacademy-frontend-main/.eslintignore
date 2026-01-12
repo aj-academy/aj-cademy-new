@@ -1,7 +1,0 @@
-app/admin/dashboard/page.tsx
-app/admin/dashboard/**
-**/*.ts
-**/*.tsx
-node_modules
-.next
-out 
