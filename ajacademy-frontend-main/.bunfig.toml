@@ -1,0 +1,16 @@
+[install]
+# Use node-fetch from npm instead of trying to resolve it from the project
+node-fetch = "npm:node-fetch@2"
+
+[build]
+# Disable webpack caching for development
+cache = false
+
+[test]
+# Disable worker threads in tests
+worker_threads = false
+
+[dev]
+# Configure development server
+port = 3000
+hostname = "localhost" 

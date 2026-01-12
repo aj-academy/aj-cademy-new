@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diwali Fireworks Animation</title>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@3/tsparticles.bundle.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #0b0c10 40%, #000 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+    }
+
+    #tsparticles {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      top: 0; 
+      left: 0;
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      z-index: 1000;
+      position: relative;
+      color: gold;
+      text-shadow: 0 0 20px #ffeb3b, 0 0 40px #ff9800;
+    }
+
+    p {
+      position: relative;
+      z-index: 1000;
+      color: #ffecb3;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="tsparticles"></div>
+
+  <div>
+    <h1>🎇 Happy Diwali from AJ Academy 🎆</h1>
+    <p>May your learning and success shine as bright as these fireworks!</p>
+  </div>
+
+  <script>
+    tsParticles.load("tsparticles", {
+      fullScreen: { enable: true },
+      background: { color: "transparent" },
+      particles: {
+        number: { value: 0 },
+        life: { duration: { value: 1 } },
+        move: { enable: true, speed: 5 },
+        color: { value: ["#ffeb3b", "#f44336", "#03a9f4", "#8bc34a"] },
+        opacity: { value: 1 },
+        shape: { type: "circle" },
+        size: { value: 2 },
+      },
+      emitters: {
+        direction: "none",
+        rate: { delay: 0.2, quantity: 2 },
+        size: { width: 100, height: 100 },
+        position: { x: 50, y: 80 },
+      },
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery Upload Test</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      margin: 2rem;
+      line-height: 1.6;
+      color: #333;
+    }
+    h1 {
+      color: #2563eb;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .card {
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1rem;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 0.25rem;
+    }
+    textarea {
+      min-height: 100px;
+    }
+    .tag-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .tag {
+      background-color: #e0e7ff;
+      color: #4f46e5;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      display: flex;
+      align-items: center;
+    }
+    .tag button {
+      background: none;
+      border: none;
+      margin-left: 0.25rem;
+      cursor: pointer;
+      color: #4f46e5;
+    }
+    button {
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 0.25rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1d4ed8;
+    }
+    .result {
+      margin-top: 1rem;
+      padding: 1rem;
+      background-color: #f1f5f9;
+      border-radius: 0.25rem;
+      white-space: pre-wrap;
+    }
+    .success {
+      color: #047857;
+    }
+    .error {
+      color: #b91c1c;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Gallery Upload Test</h1>
+    
+    <div class="card">
+      <h2>Admin Auth Token</h2>
+      <div class="form-group">
+        <label for="token">Auth Token</label>
+        <textarea id="token" rows="4">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFkbWluLTEyMyIsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiYWRtaW4iLCJwZXJtaXNzaW9ucyI6WyJtYW5hZ2VfY291cnNlcyIsIm1hbmFnZV91c2VycyIsIm1hbmFnZV9jb250ZW50Il0sImlhdCI6MTc0NjM2MTIzMiwiZXhwIjoxNzQ2NDQ3NjMyfQ.BREsiyKdZCJeANhYLn-ZlOThApEzqJvsEMdxL97BFY0</textarea>
+      </div>
+    </div>
+    
+    <div class="card">
+      <h2>Image Upload Form</h2>
+      <form id="uploadForm">
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input type="text" id="title" value="Test Image from Admin Token" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" required>This is a test image uploaded using the admin token for testing purposes</textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category" required>
+            <option value="campus">Campus</option>
+            <option value="events">Events</option>
+            <option value="students">Students</option>
+            <option value="classroom">Classroom</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="url">Image URL or Google Drive ID</label>
+          <input type="text" id="url" value="1WsMqgMcAklWKg_j8hpvXV6yExWpZHORT" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="photographer">Photographer</label>
+          <input type="text" id="photographer" value="Admin Test User" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="newTag">Tags</label>
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="text" id="newTag" placeholder="Add a tag">
+            <button type="button" id="addTagBtn" style="width: auto;">Add Tag</button>
+          </div>
+          <div id="tagContainer" class="tag-container">
+            <!-- Tags will be added here dynamically -->
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="featured"> Featured Image
+          </label>
+        </div>
+        
+        <button type="submit" id="uploadBtn">Upload Image</button>
+      </form>
+      
+      <div id="result" class="result" style="display: none;"></div>
+    </div>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const uploadForm = document.getElementById('uploadForm');
+      const tokenInput = document.getElementById('token');
+      const titleInput = document.getElementById('title');
+      const descriptionInput = document.getElementById('description');
+      const categoryInput = document.getElementById('category');
+      const urlInput = document.getElementById('url');
+      const photographerInput = document.getElementById('photographer');
+      const featuredInput = document.getElementById('featured');
+      const newTagInput = document.getElementById('newTag');
+      const addTagBtn = document.getElementById('addTagBtn');
+      const tagContainer = document.getElementById('tagContainer');
+      const resultDiv = document.getElementById('result');
+      
+      // Store tags
+      let tags = ['test', 'admin', 'token-test'];
+      
+      // Initialize tag display
+      renderTags();
+      
+      // Add tag event
+      addTagBtn.addEventListener('click', function() {
+        const tag = newTagInput.value.trim();
+        if (tag && !tags.includes(tag)) {
+          tags.push(tag);
+          newTagInput.value = '';
+          renderTags();
+        }
+      });
+      
+      // Render tags
+      function renderTags() {
+        tagContainer.innerHTML = '';
+        tags.forEach(tag => {
+          const tagElement = document.createElement('div');
+          tagElement.className = 'tag';
+          tagElement.textContent = tag;
+          
+          const removeBtn = document.createElement('button');
+          removeBtn.textContent = '×';
+          removeBtn.addEventListener('click', () => {
+            tags = tags.filter(t => t !== tag);
+            renderTags();
+          });
+          
+          tagElement.appendChild(removeBtn);
+          tagContainer.appendChild(tagElement);
+        });
+      }
+      
+      // Form submission
+      uploadForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const token = tokenInput.value.trim();
+        
+        // Prepare image data
+        const imageData = {
+          title: titleInput.value,
+          description: descriptionInput.value,
+          category: categoryInput.value,
+          tags: tags,
+          url: urlInput.value,
+          photographer: photographerInput.value,
+          featured: featuredInput.checked,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        };
+        
+        // Display loading state
+        resultDiv.style.display = 'block';
+        resultDiv.classList.remove('success', 'error');
+        resultDiv.textContent = 'Uploading...';
+        
+        try {
+          // Make the API call
+          const response = await fetch('/api/gallery', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(imageData)
+          });
+          
+          const result = await response.json();
+          
+          // Display result
+          resultDiv.textContent = JSON.stringify(result, null, 2);
+          
+          if (response.ok && (result.success || response.status === 200)) {
+            resultDiv.classList.add('success');
+            resultDiv.textContent = "SUCCESS: " + resultDiv.textContent;
+          } else {
+            resultDiv.classList.add('error');
+            resultDiv.textContent = "ERROR: " + resultDiv.textContent;
+          }
+        } catch (error) {
+          resultDiv.classList.add('error');
+          resultDiv.textContent = `Error: ${error.message}`;
+        }
+      });
+    });
+  </script>
+</body>
+</html> 
